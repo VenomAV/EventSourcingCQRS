@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="EventStore.ClientAPI.NetCore" Version="4.0.3-rc" />
+    <PackageReference Include="xunit" Version="2.3.1" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.3.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\EventSourcingCQRS.Domain.EventStore\EventSourcingCQRS.Domain.EventStore.csproj" />
+    <ProjectReference Include="..\EventSourcingCQRS.Domain\EventSourcingCQRS.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

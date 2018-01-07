@@ -1,0 +1,113 @@
+﻿@model EventSourcingCQRS.Models.CartDetailsViewModel
+@{
+    ViewData["Title"] = "Cart detail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    int index = 0;
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<div class="container">
+    <div class="row">
+        <label asp-for="Cart.CustomerName" class="col-lg-2"></label>
+        <p class="col-lg-2">@Model.Cart.CustomerName</p>
+    </div>
+    <div class="row container">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Product Name</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var cartItem in Model.CartItems)
+                {
+                    <tr>
+                        <th scope="row">
+                            @(++index)
+                        </th>
+                        <td>@cartItem.ProductName</td>
+                        <td>@cartItem.Quantity</td>
+                        <td>
+                            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#changeProductQuantityModal"
+                                    data-productid="@cartItem.ProductId" data-productname="@cartItem.ProductName" data-quantity="@cartItem.Quantity">
+                                <span class="glyphicon glyphicon-edit"></span>
+                            </button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="row container">
+        <button type="button" class="btn btn-primary" id="addProductButton" data-toggle="modal" data-target="#addProductModal">
+            <span class="glyphicon glyphicon-plus"></span>
+        </button>
+    </div>
+</div>
+<div class="modal fade" role="dialog" id="addProductModal" tabindex="-1" aria-labelledby="addProductModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <form asp-action="AddProductAsync" asp-route-id="@Model.Cart.Id" method="post">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="addProductModalLabel">Select product to add</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="productId">Product</label>
+                        <select id="productId" name="productId" asp-items="@Model.AvailableProducts" class="form-control"></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="quantity">Quantity</label>
+                        <input type="number" id="quantity" name="quantity" class="form-control" required />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Add product</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="modal fade" role="dialog" id="changeProductQuantityModal" tabindex="-1" aria-labelledby="changeProductQuantityModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <form asp-action="ChangeProductQuantityAsync" asp-route-id="@Model.Cart.Id" method="post">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="changeProductQuantityModalLabel">Change product quantity</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="changeQuantityProductId">Product</label>
+                        <input type="text" id="changeQuantityProductName" class="form-control" readonly />
+                        <input id="changeQuantityProductId" name="productId" type="hidden" />
+                    </div>
+                    <div class="form-group">
+                        <label for="changedQuantity">Quantity</label>
+                        <input type="number" id="changedQuantity" name="quantity" class="form-control" required />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Change</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+@section Scripts {
+    <script type="text/javascript">
+        $(function () {
+            $("#changeProductQuantityModal").on("show.bs.modal", function (e) {
+                $("#changeQuantityProductName").val($(e.relatedTarget).data("productname"));
+                $("#changeQuantityProductId").val($(e.relatedTarget).data("productid"));
+                $("#changedQuantity").val($(e.relatedTarget).data("quantity"));
+            });
+        });
+    </script>
+}

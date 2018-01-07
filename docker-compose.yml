@@ -1,0 +1,24 @@
+version: '3'
+
+services:
+  mongo:
+    image: mongo
+    networks:
+      - eventsourcingcqrsnet
+  eventstore:
+    image: eventstore/eventstore
+    networks:
+      - eventsourcingcqrsnet
+  eventsourcingcqrs:
+    image: eventsourcingcqrs
+    build:
+      context: ./EventSourcingCQRS
+      dockerfile: Dockerfile
+    depends_on:
+      - eventstore
+    networks:
+      - eventsourcingcqrsnet
+
+networks:
+  eventsourcingcqrsnet:
+    driver: bridge

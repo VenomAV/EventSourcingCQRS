@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="EventStore.ClientAPI.NetCore" Version="4.0.3-rc" />
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.3" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\EventSourcingCQRS.Application\EventSourcingCQRS.Application.csproj" />
+    <ProjectReference Include="..\EventSourcingCQRS.Domain.EventStore\EventSourcingCQRS.Domain.EventStore.csproj" />
+    <ProjectReference Include="..\EventSourcingCQRS.Domain\EventSourcingCQRS.Domain.csproj" />
+    <ProjectReference Include="..\EventSourcingCQRS.ReadModel\EventSourcingCQRS.ReadModel.csproj" />
+  </ItemGroup>
+
+</Project>
